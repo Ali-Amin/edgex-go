@@ -15,12 +15,26 @@
 // limitations under the License.
 //
 
+library(identifier: 'edgex-global-pipelines@main',
+    retriever: legacySCM([
+        $class: 'GitSCM',
+        userRemoteConfigs: [[url: 'https://github.com/Ali-Amin/edgex-global-pipelines.git']],
+        branches: [[name: '*/alvarium-integration']],
+        doGenerateSubmoduleConfigurations: false,
+        extensions: [[
+            $class: 'SubmoduleOption',
+            recursiveSubmodules: true,
+        ]]]
+    )
+) _
+
 edgeXBuildGoParallel(
     project: 'edgex-go',
     dockerFileGlobPath: 'cmd/**/Dockerfile',
     testScript: 'make test',
     buildScript: 'make build',
-    publishSwaggerDocs: true,
+    publishSwaggerDocs: false,
     swaggerApiFolders: ['openapi/v3'],
-    buildSnap: false
+    buildSnap: false,
+    pushImage: false,
 )
